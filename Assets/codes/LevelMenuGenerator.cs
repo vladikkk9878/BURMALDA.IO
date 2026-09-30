@@ -1,11 +1,13 @@
 using UnityEngine;
+
 using UnityEngine.UI;
 
-public class NewMonoBehaviourScript : MonoBehaviour
+public class LevelMenuGenerator : MonoBehaviour
 {
     [SerializeField] private int levelCount;
     [SerializeField] private GameObject buttonPrefab;
     [SerializeField] private Transform root;
+    [SerializeField] private int  complitedLevelCount;
 
     private void Start()
     {
@@ -17,7 +19,21 @@ public class NewMonoBehaviourScript : MonoBehaviour
     {
         for (int i = 0; i < levelCount; i++)
         {
-            Instantiate(buttonPrefab, root);
+            var instance = Instantiate(buttonPrefab, root);
+            if (instance.TryGetComponent(out LevelButton button))
+            {
+                int levelNumber = i + 1;
+                int starsCount = Random.Range(1, 4);
+                if (i == complitedLevelCount)
+                {
+                    button.Init(levelNumber, 0, true);
+                }
+                else
+                {
+                    button.Init(levelNumber, starsCount, i < complitedLevelCount);
+                }
+            }
+                
 
         }
     }
